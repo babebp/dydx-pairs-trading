@@ -1,6 +1,7 @@
 from connections import connect_dydx
-from constants import ABORT_ALL_POSITIONS
+from constants import ABORT_ALL_POSITIONS, FIND_COINTEGRATED
 from private import abort_all_positions
+from public import construct_market_prices
 
 if __name__ == '__main__':
     
@@ -14,11 +15,20 @@ if __name__ == '__main__':
 
     # Abote all open positions
     if ABORT_ALL_POSITIONS:
-        close_orders = abort_all_positions(client)
-
         try:
             print('Closing all positions...')
-            # close_orders = abort_all_positions(client)
+            close_orders = abort_all_positions(client)
         except Exception as e:
             print('Error closing all positions :', e)
+            exit(1)
+
+    # Find Cointegrated Pairs
+    if FIND_COINTEGRATED:
+
+        # Construct Market Prices
+        try:
+            print('Fetching market prices...')
+            df_market_prices = construct_market_prices(client)
+        except Exception as e:
+            print('Error fetching market prices :', e)
             exit(1)
