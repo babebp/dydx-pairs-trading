@@ -8,6 +8,33 @@ from constants import RESOLUTION
 # Get relevant time periods for ISO from and to
 ISO_TIMES = get_ISO_times()
 
+
+# Get candle recent
+def get_candles_recent(client, market):
+
+    # Define output
+    close_prices = []
+
+    # Protect API
+    time.sleep(0.2)
+
+    # Get data
+    candles = client.public.get_candles(
+        market=market,
+        resolution=RESOLUTION,
+        limit=100
+    )
+
+    # Structure data
+    for candle in candles.data['candles']:
+        close_prices.append(candle['close'])
+
+
+    # Construct and return close price series
+    close_prices.reverse()
+    prices_result = np.array(close_prices).astype(np.float64)
+    return prices_result
+
 # Get historical data
 def get_candles_historical(client, market):
 
