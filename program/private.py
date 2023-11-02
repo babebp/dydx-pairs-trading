@@ -2,6 +2,12 @@ from datetime import datetime, timedelta
 import time
 from utils import format_number
 
+
+# Check order status
+def check_order_status(client, order_id):
+    order = client.private.get_order_by_id(order_id)
+    return order.data['order']['status']
+
 # Place market order
 def place_market_order(client, market, side, size, price, reduce_only):
     # Get Position Id
